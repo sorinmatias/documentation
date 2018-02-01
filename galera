@@ -1,0 +1,9 @@
+Package installation: 
+1. Remove existing mysql/mariadb existing packages
+2. Add a repo file
+    vim /etc/yum.repo.d/Galera.repo
+    [galera]
+    name = Galera
+    baseurl = http://releases.galeracluster.com/centos/7/x86_64
+    gpgkey = http://releases.galeracluster.com/GPG-KEY-galeracluster.com
+    gpgcheck = 1
