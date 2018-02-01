@@ -1,2 +1,2 @@
 # documentation
-Linux Documentation
+Linux documentation for various installation
