@@ -14,13 +14,13 @@ yum install MariaDB-server MariaDB-client
 systemctl enable mariadb
 systemctl start mariadb
 CREATE DATABASE testlink;
-CREATE USER 'testlinkuser'@'localhost' IDENTIFIED BY 'KrQ5HXpvt2';
-GRANT ALL PRIVILEGES ON testlink.* TO 'testlinkuser'@'localhost' IDENTIFIED BY 'KrQ5HXpvt2' WITH GRANT OPTION;
+CREATE USER 'testlinkuser'@'localhost' IDENTIFIED BY 'xxxxxx';
+GRANT ALL PRIVILEGES ON testlink.* TO 'testlinkuser'@'localhost' IDENTIFIED BY 'xxxxxx' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 EXIT;
 mysql_secure_installation
 root
-JVY7Dd9LKC
+xxxxxx
 
 yum install httpd -y
 systemctl enable httpd
@@ -68,6 +68,8 @@ systemctl restart httpd
 access ip and continue with install
 login admin admin for new installation
 login admin
-passwd yeurhFj4D8
-yeurhFj4D8
+passwd xxxxxx
 
+chown -R root:root /var/www/html/testlink-code-1.9.16
+chown -R apache:apache /var/www/html/testlink-code-1.9.16/{gui,logs,upload_area}
+systemctl restart httpd.service
