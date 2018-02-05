@@ -1,0 +1,73 @@
+yum install epel-release -y
+yum -y update
+init 6
+yum install -y httpd
+vim /etc/yum.repo.d/MariaDB.repo
+# MariaDB 10.2 CentOS repository list - created 2018-02-05 09:07 UTC
+# http://downloads.mariadb.org/mariadb/repositories/
+[mariadb]
+name = MariaDB
+baseurl = http://yum.mariadb.org/10.2/centos7-amd64
+gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+yum install MariaDB-server MariaDB-client
+systemctl enable mariadb
+systemctl start mariadb
+CREATE DATABASE testlink;
+CREATE USER 'testlinkuser'@'localhost' IDENTIFIED BY 'KrQ5HXpvt2';
+GRANT ALL PRIVILEGES ON testlink.* TO 'testlinkuser'@'localhost' IDENTIFIED BY 'KrQ5HXpvt2' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT;
+mysql_secure_installation
+root
+JVY7Dd9LKC
+
+yum install httpd -y
+systemctl enable httpd
+systemctl start httpd
+mysql_secure_installation
+
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum install mod_php71w php71w-mysqlnd php71w-common php71w-gd php71w-ldap php71w-cli php71w-mcrypt php71w-xml -y
+cp /etc/php.ini /etc/php.ini.bak
+modify /etc/php.ini
+sed -i "s/session.gc_maxlifetime = 1440/session.gc_maxlifetime = 2880/" /etc/php.ini
+sed -i "s/max_execution_time = 30/max_execution_time = 120/" /etc/php.ini
+sed -i "s/max_input_vars = 1000/max_input_vars = 4000/" /etc/php.ini
+sed -i "s/memory_limit = 128M/memory_limit = 256M/" /etc/php.ini
+cd /var/www/html/
+wget https://github.com/TestLinkOpenSourceTRMS/testlink-code/archive/1.9.16.tar.gz
+tar -zxvf 1.9.16.tar.gz
+chown -R apache:apache /var/www/html/testlink-code-1.9.16
+cp /var/www/html/testlink-code-1.9.16/custom_config.inc.php.example /var/www/html/testlink-code-1.9.16/custom_config.inc.php
+vim /var/www/html/testlink-code-1.9.16/custom_config.inc.php
+replace 
+// $tlCfg->log_path = '/var/testlink-ga-testlink-code/logs/'; /* unix example */
+// $g_repositoryPath = '/var/testlink-ga-testlink-code/upload_area/';  /* unix example */
+with
+$tlCfg->log_path = '/var/www/html/testlink-code-1.9.16/logs/';
+$g_repositoryPath = '/var/www/html/testlink-code-1.9.16/upload_area/';
+vim /etc/httpd/conf.d/testlink.conf
+<VirtualHost *:80>
+  ServerAdmin admin@evozon.com
+  DocumentRoot /var/www/html/testlink-code-1.9.16/
+  ServerName testlink.evozon.com
+  ServerAlias www.testlink.evozon.com
+
+  <Directory /var/www/html/testlink-code-1.9.16/>
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    allow from all
+  </Directory>
+
+  ErrorLog /var/log/httpd/testlink.example.com-error_log
+  CustomLog /var/log/httpd/testlink.example.com-access_log common
+</VirtualHost>
+systemctl restart httpd
+access ip and continue with install
+login admin admin for new installation
+login admin
+passwd yeurhFj4D8
+yeurhFj4D8
+
