@@ -1,9 +1,75 @@
 Package installation: 
 1. Remove existing mysql/mariadb existing packages
 2. Add a repo file
-    vim /etc/yum.repo.d/Galera.repo
-    [galera]
-    name = Galera
-    baseurl = http://releases.galeracluster.com/centos/7/x86_64
-    gpgkey = http://releases.galeracluster.com/GPG-KEY-galeracluster.com
-    gpgcheck = 1
+        ##  http://releases.galeracluster.com/   ##--check latest releases 
+vim /etc/yum.repo.d/Galera.repo
+
+[galera]
+name = Galera
+baseurl = http://releases.galeracluster.com/galera-3/centos/7/x86_64/
+gpgkey = http://releases.galeracluster.com/GPG-KEY-galeracluster.com
+gpgcheck = 1
+
+[mysql-wsrep]
+name = MySQL-wsrep
+baseurl =  http://releases.galeracluster.com/mysql-wsrep-5.7.20-25.13/centos/7/x86_64/
+gpgkey = http://releases.galeracluster.com/GPG-KEY-galeracluster.com
+gpgcheck = 1
+
+3.Install Galera and the prerequisite packages
+
+yum -y install galera-3 mysql-wsrep-5.7 rsync lsof policycoreutils-python
+
+4.Enable the Galera service to start at boot, but do not start the service just yet.
+
+systemctl enable mysqld
+
+5. Configure iptables
+
+vim /etc/sysconfig/iptables
+
+# ports fot galera cluster
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 4567 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 4568 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 4444 -j ACCEPT
+
+6. Configure mysql
+
+vim /etc/my.cnf
+
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+binlog_format=ROW
+bind-address=0.0.0.0
+default_storage_engine=innodb
+innodb_autoinc_lock_mode=2
+innodb_flush_log_at_trx_commit=0
+innodb_buffer_pool_size=122M
+wsrep_provider=/usr/lib64/galera-3/libgalera_smm.so
+wsrep_provider_options="gcache.size=300M; gcache.page_size=300M"
+wsrep_cluster_name="galera_cluster"
+wsrep_cluster_address="gcomm://172.22.150.164:3306,172.22.150.76:3306,172.22.150.236:3306"
+wsrep_sst_method=rsync
+server_id=1
+wsrep_node_address="172.22.150.164"
+wsrep_node_name="01"
+pid-file=/var/run/mysqld/mysqld.pid
+log-error=/var/log/mysqld.log
+
+7. Create the mysqld.log and give the mysql account the appropriate permissions
+
+touch /var/log/mysqld.log
+chown mysql:mysql /var/log/mysqld.log
+
+8.  Repeat the above steps on each MySQL node that will participate in the MySQL Cluster. 
+Be sure to alter the below fields in the /etc/my.cnf file to reflect the correct IP address
+and hostname that is applicable to each node
+
+server_id=1
+wsrep_node_address="172.22.150.xxx"
+wsrep_node_name="nodexx"
+
+9.
