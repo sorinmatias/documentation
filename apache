@@ -1,0 +1,50 @@
+Disable unused modules
+
+TraceEnable off
+  Disable Trace HTTP Request
+  The default TraceEnable on permits TRACE, which disallows any request body to accompany the request. 
+  TraceEnable off causes the core server and mod_proxy to return a 405 (Method not allowed) error to the client.
+  TraceEnable on allows for Cross Site Tracing Issue and potentially giving the option to a hacker to steal your cookie 
+  information.
+  Solution: Address this security issue by disabling the TRACE HTTP method in Apache Configuration. You can do by
+  Modifying/Adding below directive in your httpd.conf of your Apache Web Server.
+ 
+User apache
+Group apache
+  It is good to run Apache in its own non-root account.Don’t set User (or Group) to root unless you know exactly
+  what you are doing, and what the dangers are.
+  
+ServerSignature Off
+  The Off setting, which is the default, suppresses the footer line. The On setting simply adds a line with the server 
+  version number and ServerName of the serving virtual host.
+  Solution: It’s good to disable Signature, as you may not wish to reveal Apache Version you are running.
+  
+ServerTokens Prod
+  This directive controls whether Server response header field, which is sent back to clients, includes a description of 
+  the generic OS-type of the server as well as information about compiled-in modules.
+  
+Restrict Access to a Specific Network or IP
+  <Directory /yourwebsite>    
+Options None    
+AllowOverride None    
+Order deny,allow    
+Deny from all    
+Allow from 10.20.0.0/24  #allow network or
+Allow from 10.20.0.0/24  #allow ip
+</Directory>
+
+SSLProtocol -ALL +TLSv1
+  Use only TLS, Disable SSLv2, SSLv3
+  SSL 2.0 & 3.0, reportedly suffers from several cryptographic flaws.
+  To disable directory browsing, you can either set the value of Option directive to “None” or “-Indexes”
+Disable Directory Listing
+<Directory />
+Options None
+#Options -Indexes
+Order allow,deny
+Allow from all
+</Directory>
+
+SSLCipherSuite ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM
+  Allow only strong ciphers so you close all the doors who try to handshake on lower cipher suites.
+
