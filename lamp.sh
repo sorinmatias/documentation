@@ -43,24 +43,8 @@ done
 if [ "$ANSWER" == "" ];then
     ANSWER=5.5
 fi
-#    echo "Installing default mariadb"
- #   echo -e "# MariaDB $MARIADEFAULT CentOS repository list\n# http://downloads.mariadb.org/mariadb/repositories/\n[mariadb]\nname = MariaDB\nbaseurl = http://yum.mariadb.org/$MARIADEFAULT/centos7-amd64\ngpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\ngpgcheck=1" > /etc/yum.repos.d/MariaDB.repo
-#    yum -y install MariaDB-server MariaDB-client
-#elif [ "$ANSWER" == "10.0" ];then
     echo "Installing $ANSWER MariaDB"
     echo -e "# MariaDB $ANSWER CentOS repository list\n# http://downloads.mariadb.org/mariadb/repositories/\n[mariadb]\nname = MariaDB\nbaseurl = http://yum.mariadb.org/$ANSWER/centos7-amd64\ngpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\ngpgcheck=1" > /etc/yum.repos.d/MariaDB.repo
-#    yum -y install MariaDB-server MariaDB-client
-#elif [ "$ANSWER" == "10.1" ];then
-#    echo "Installing $ANSWER mariadb"
-#    echo -e "# MariaDB $ANSWER CentOS repository list\n# http://downloads.mariadb.org/mariadb/repositories/\n[mariadb]\nname = MariaDB\nbaseurl = http://yum.mariadb.org/$ANSWER/centos7-amd64\ngpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\ngpgcheck=1" > /etc/yum.repos.d/MariaDB.repo
-#    yum -y install MariaDB-server MariaDB-client
-#elif [ "$ANSWER" == "10.2" ];then
-#    echo "Installing $ANSWER mariadb"
-#    echo -e "# MariaDB $ANSWER CentOS repository list\n# http://downloads.mariadb.org/mariadb/repositories/\n[mariadb]\nname = MariaDB\nbaseurl = http://yum.mariadb.org/$ANSWER/centos7-amd64\ngpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\ngpgcheck=1" > /etc/yum.repos.d/MariaDB.repo
-#    yum -y install MariaDB-server MariaDB-client
-#elif [ "$ANSWER" == "10.3" ];then
-#    echo "Installing $ANSWER mariadb"
-#    echo -e "# MariaDB $ANSWER CentOS repository list\n# http://downloads.mariadb.org/mariadb/repositories/\n[mariadb]\nname = MariaDB\nbaseurl = http://yum.mariadb.org/$ANSWER/centos7-amd64\ngpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\ngpgcheck=1" > /etc/yum.repos.d/MariaDB.repo
 yum -y install MariaDB-client
 systemctl enable MariaDB
 systemctl start MariaDB
