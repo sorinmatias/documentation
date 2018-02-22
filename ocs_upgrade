@@ -4,6 +4,20 @@ cd /root/packs
 wget https://github.com/OCSInventory-NG/OCSInventory-ocsreports/releases/download/2.4/OCSNG_UNIX_SERVER_2.4.tar.gz
 follow instuction on
 ./setup.sh
+
+
+
+Warning
+ERROR: PERL module Archive::Zip is not installed !
+*** ERROR: There is one or more required PERL modules missing on your computer !
+ERROR: PERL module Mojolicious::Lite is not installed !
+Do you wish to continue (y/[n])?y
+Found that PERL module Switch is available.
+*** ERROR: PERL module Plack::Handler is not installed !
+
+
+
+
 y
 ENTER
 ENTER
