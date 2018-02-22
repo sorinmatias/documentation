@@ -1,0 +1,41 @@
+mysqldump -u root -p ocsweb > ocs-database-save.sql
+Next you must save the files ocsinventory-server.conf and ocsinventory-reports.conf that you will find in the apache config directory.
+cd /root/packs
+wget https://github.com/OCSInventory-NG/OCSInventory-ocsreports/releases/download/2.4/OCSNG_UNIX_SERVER_2.4.tar.gz
+follow instuction on
+./setup.sh
+y
+ENTER
+ENTER
+ENTER
+ENTER
+curl -L cpanmin.us | perl - Mojolicious
+add
+RewriteEngine on
+
+RewriteRule ^/$ /ocsreports
+
+RewriteCond %{HTTPS} !=on
+RewriteRule ^/(ocsreports)$ https://%{SERVER_NAME}/$1 [R,L]
+to 
+vim /etc/httpd/conf.s/ocsinventory-reports.conf
+
+update password field mysql user ocs  
+vim /etc/httpd/conf.d/z-ocsinventory-server.conf
+vim /root/packs/OCSNG_UNIX_SERVER_2.4/ocsreports/dbconfig.inc.php
+
+vim /usr/share/ocsinventory-reports/ocsreports/require/function_commun.php
+comment function formGoup from line 415 to 441
+wget http://rpms.famillecollet.com/enterprise/remi.repo -O /etc/yum.repos.d/remi.repo
+vim /etc/yum.repos.d/remi.repo
+    -- enable 5.6
+yum install php php-soap php-xml
+chmod g=rwx /var/lib/ocsinventory-reports
+
+chmod 775 /usr/share/ocsinventory-reports/ocsreports/dbconfig.inc.php 
+chmod 775 /usr/share/ocsinventory-reports/ocsreports/
+remove last line from  (line 6)
+vim /usr/share/ocsinventory-reports/ocsreports/libraries/bootstrap/css/bootstrap.min.css
+/*# sourceMappingURL=bootstrap.css.map */
+
+
