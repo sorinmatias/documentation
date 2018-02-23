@@ -1,4 +1,5 @@
 mysqldump -u root -p ocsweb > ocs-database-save.sql
+yum install -y gcc
 Next you must save the files ocsinventory-server.conf and ocsinventory-reports.conf that you will find in the apache config directory.
 cd /root/packs
 wget https://github.com/OCSInventory-NG/OCSInventory-ocsreports/releases/download/2.4/OCSNG_UNIX_SERVER_2.4.tar.gz
@@ -51,5 +52,19 @@ chmod 775 /usr/share/ocsinventory-reports/ocsreports/
 remove last line from  (line 6)
 vim /usr/share/ocsinventory-reports/ocsreports/libraries/bootstrap/css/bootstrap.min.css
 /*# sourceMappingURL=bootstrap.css.map */
+
+Please login http://ip/ocsreports
+
+uncomment function formGoup from line 415 to 441
+vim /usr/share/ocsinventory-reports/ocsreports/require/function_commun.php
+
+modify ocs.networks
+alter table networks add MTU varchar(255) NULL after SPEED;
+
+for more descriptive errors pls modify line 52 from 
+vim /etc/httpd/conf.d/z-ocsinventory-server.conf
+PerlSetEnv OCS_OPT_DBI_PRINT_ERROR 0
+and restart apache
+
 
 
