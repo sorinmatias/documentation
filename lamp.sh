@@ -45,7 +45,7 @@ if [ "$ANSWER" == "" ];then
 fi
     echo "Installing $ANSWER MariaDB"
     echo -e "# MariaDB $ANSWER CentOS repository list\n# http://downloads.mariadb.org/mariadb/repositories/\n[mariadb]\nname = MariaDB\nbaseurl = http://yum.mariadb.org/$ANSWER/centos7-amd64\ngpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\ngpgcheck=1" > /etc/yum.repos.d/MariaDB.repo
-yum -y install MariaDB-client
+yum -y install MariaDB-client MariaDB-server
 systemctl enable MariaDB
 systemctl start MariaDB
 
