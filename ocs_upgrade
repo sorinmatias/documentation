@@ -1,3 +1,5 @@
+!!! make a backup of /usr/local/share/perl5/Apache/Ocsinventory/Map.pm before upgrade
+
 mysqldump -u root -p ocsweb > ocs-database-save.sql
 yum install -y gcc
 Next you must save the files ocsinventory-server.conf and ocsinventory-reports.conf that you will find in the apache config directory.
